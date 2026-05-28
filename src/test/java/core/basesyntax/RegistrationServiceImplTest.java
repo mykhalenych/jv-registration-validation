@@ -58,6 +58,25 @@ class RegistrationServiceImplTest {
     }
 
     @Test
+    void register_emptyLogin_notOk() {
+        User user = new User();
+        user.setLogin("");
+        user.setPassword("validPassword");
+        user.setAge(20);
+        assertThrows(RegistrationException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    void register_sixCharLogin_ok() {
+        User user = new User();
+        user.setLogin("sixchr");
+        user.setPassword("validPassword");
+        user.setAge(20);
+        User registeredUser = registrationService.register(user);
+        assertNotNull(registeredUser);
+    }
+
+    @Test
     void register_nullLogin_notOk() {
         User user = new User();
         user.setLogin(null);
@@ -76,6 +95,25 @@ class RegistrationServiceImplTest {
     }
 
     @Test
+    void register_emptyPassword_notOk() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setPassword("");
+        user.setAge(20);
+        assertThrows(RegistrationException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    void register_sixCharPassword_ok() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setPassword("sixchr");
+        user.setAge(20);
+        User registeredUser = registrationService.register(user);
+        assertNotNull(registeredUser);
+    }
+
+    @Test
     void register_nullPassword_notOk() {
         User user = new User();
         user.setLogin("validLogin");
@@ -90,6 +128,25 @@ class RegistrationServiceImplTest {
         user.setLogin("validLogin");
         user.setPassword("validPassword");
         user.setAge(17);
+        assertThrows(RegistrationException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    void register_eighteenAge_ok() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setPassword("validPassword");
+        user.setAge(18);
+        User registeredUser = registrationService.register(user);
+        assertNotNull(registeredUser);
+    }
+
+    @Test
+    void register_negativeAge_notOk() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setPassword("validPassword");
+        user.setAge(-5);
         assertThrows(RegistrationException.class, () -> registrationService.register(user));
     }
 
